@@ -206,12 +206,12 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         long currentTime = System.currentTimeMillis();
         System.out.println("Last update: "+lastUpdate/(1000 * 60 * 60 * 24l));
         System.out.println("Current Time: "+currentTime/(1000 * 60 * 60 * 24l));
-        //if (lastUpdate/(1000 * 60 * 60 * 24l) < currentTime/(1000 * 60 * 60 * 24l)){
+        if (lastUpdate/(1000 * 60 * 60 * 24l) < currentTime/(1000 * 60 * 60 * 24l)){
             Log.d(TAG,"Entrée du if");
             stepDiff = stepCount;
             saveStepCount(gStepCount, stepDiff, currentTime);
             lastUpdate = currentTime;
-        //}
+        }
 
 
         gStepCount = stepCount-stepDiff;
