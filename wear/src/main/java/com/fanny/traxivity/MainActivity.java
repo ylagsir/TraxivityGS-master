@@ -143,11 +143,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         calendar.set(Calendar.HOUR_OF_DAY, 13);
 
 
-        SharedPreferences.Editor editor = settings.edit();
+        /*SharedPreferences.Editor editor = settings.edit();
         editor.putInt("stepCount", 1234);
         editor.commit();
 
-        startService(new Intent(MainActivity.this,SendFileService.class));
+        startService(new Intent(MainActivity.this,SendFileService.class));*/
 
 
     }
