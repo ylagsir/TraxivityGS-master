@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\ylags\Documents\TraxivityGS-master\wear\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\wear\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_5ee6335b8b813e5e91360647090612da65359a2b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\ylags\Documents\TraxivityGS-master\wear\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4bcb197c6f00645b8f05b9c9356a4c63d5074310">
+        <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\wear\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_f61a34f3f75a440d22d1f9d9b6b98962497fb84b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\ylags\Documents\TraxivityGS-master\mobile\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\mobile\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_de18e3324d100aa2fc72592e2bfcd82271d63b14\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\ylags\Documents\TraxivityGS-master\mobile\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bb3f4ce98fe6f30e3146a2d76a422f47c6206538">
+        <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\mobile\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_a43b774872431154490c61534ab7ea5378d3b950\classes.dex" />
+    </item>
+
+</items>
