@@ -26,6 +26,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
     private static final String PREFERENCE_NAME = "PreferenceFile";
 
+    private static final String DATA_FOLDER= "/Traxivity/data";
+
 
     /**
      * Used for debugging purpose (Log)
@@ -150,6 +152,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         startService(new Intent(MainActivity.this,SendFileService.class));*/
 
 
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("activities",settings.getString("activities","")+Calendar.getInstance().getTime()+" / Beginning of the record... \n");
+        editor.commit();
+
+
     }
 
     /**
@@ -181,6 +188,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         saveStepCount(gStepCount, stepDiff, lastUpdate);
 
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("activities",settings.getString("activities","")+Calendar.getInstance().getTime()+" / End of the record ! \n");
+        editor.commit();
+
     }
 
 
@@ -207,7 +218,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         System.out.println("Last update: "+lastUpdate/(1000 * 60 * 60 * 24l));
         System.out.println("Current Time: "+currentTime/(1000 * 60 * 60 * 24l));
         if (lastUpdate/(1000 * 60 * 60 * 24l) < currentTime/(1000 * 60 * 60 * 24l)){
-            Log.d(TAG,"Entrée du if");
             stepDiff = stepCount;
             saveStepCount(gStepCount, stepDiff, currentTime);
             lastUpdate = currentTime;
@@ -219,6 +229,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         if (stepsDisplay != null) {
             stepsDisplay.setText("Steps: " + gStepCount);
         }
+
+
+        //Saving to the SharedPreferences
+
+        saveStepCount(gStepCount, stepDiff, currentTime);
 
         //Sending data each minute
 
@@ -238,4 +253,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+
 }

@@ -32,8 +32,6 @@ public class ActivityRecognitionService extends Service implements GoogleApiClie
                 build();
 
         mApiClient.connect();
-
-        Log.d(TAG,"End of the onCreate");
     }
 
     @Override
@@ -41,7 +39,7 @@ public class ActivityRecognitionService extends Service implements GoogleApiClie
         Log.d(TAG,"Beginning of the onConnected");
         Intent intent = new Intent(this, ActivityRecogniserService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        com.google.android.gms.location.ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(mApiClient, 1000, pendingIntent);
+        com.google.android.gms.location.ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(mApiClient, 0, pendingIntent);
     }
 
     @Override

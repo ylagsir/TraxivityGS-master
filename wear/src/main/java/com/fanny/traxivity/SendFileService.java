@@ -98,7 +98,7 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
 
                         Log.d(TAG, "Sending data to " + node.getDisplayName() + "...");
 
-                        sendStepcount();
+                        sendFileContent();
                     }else{
                         Log.d(TAG, node.getDisplayName() + "isn't nearby, can't send data...");
                     }
@@ -116,6 +116,10 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
 
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(WEARABLE_DATA_PATH);
         putDataMapRequest.getDataMap().putInt("stepcount",PreferenceManager.getDefaultSharedPreferences(this).getInt("stepCount",0));
+        //putDataMapRequest.getDataMap().putInt("stepDiff",PreferenceManager.getDefaultSharedPreferences(this).getInt("stepDiff",0));
+        //putDataMapRequest.getDataMap().putLong("lastUpdateTime",PreferenceManager.getDefaultSharedPreferences(this).getLong("lastUpdateTime",0));
+
+        //Sending the current time in milliseconds
         putDataMapRequest.getDataMap().putLong("timestamp",System.currentTimeMillis());
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         request.setUrgent();
@@ -133,6 +137,68 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
 
 
         stopSelf();
+
+    }
+
+    public void sendFileContent(){
+        Log.d(TAG,"Beginning of SendFileContent");
+        String line = "";
+        String tmp;
+        String fileName;
+
+        BufferedReader buffreader = null;
+
+        //String path = Environment.getExternalStorageDirectory().toString()+DATA_FOLDER;
+        String path = getFilesDir().toString()+DATA_FOLDER;
+        Log.d("Files", "Path: " + path);
+        File f = new File(path);
+        File files[] = f.listFiles();
+        if(files!=null){
+            Log.d("Files", "Size: "+ files.length);
+        }else{
+            Log.d("Files", "Size: 0");
+        }
+        DataMap dataMap = new DataMap();
+        for (int i=0; (files!=null) && (i < files.length); i++) {
+            fileName = files[i].getName();
+
+            Asset asset = null;
+
+            try {
+
+                buffreader = new BufferedReader(new FileReader(path + "/" + fileName));
+                // read every line of the file into the line-variable, one line at the time
+                while (null != (tmp = buffreader.readLine())) {
+                    line += tmp + "\n";
+                }
+
+                dataMap.putString("path", path);
+                dataMap.putString("fileName", fileName);
+
+                dataMap.putLong("time", new Date().getTime());
+                dataMap.putString("data", line);
+                dataMap.putInt("stepcount",PreferenceManager.getDefaultSharedPreferences(this).getInt("stepCount",0));
+                dataMap.putLong("timestamp",System.currentTimeMillis());
+
+
+
+
+                SendToDataLayerThread sendToDLT = new SendToDataLayerThread(WEARABLE_DATA_PATH, dataMap, googleClient, asset);
+                sendToDLT.start();
+                sendBroadcast(false);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (buffreader != null) {
+                    try {
+                        buffreader.close();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
 
     }
 
@@ -172,7 +238,57 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
             intent.putExtra("bool", false);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
-}
+    }
+
+    class SendToDataLayerThread extends Thread {
+        GoogleApiClient googleClient;
+
+        String path;
+        DataMap dataMap;
+        Asset asset;
+
+
+        /**
+         * Constructor for sending data objects to the data layer.
+         * @param p path
+         * @param data dataMap
+         * @param googleClient google api client
+         */
+        SendToDataLayerThread(String p, DataMap data, GoogleApiClient googleClient, Asset asset) {
+            path = p;
+            dataMap = data;
+            this.googleClient = googleClient;
+            this.asset = asset;
+        }
+
+        /**
+         * Construct a DataRequest and send over the data layer
+         */
+        public void run() {
+            PutDataMapRequest putDMR = PutDataMapRequest.create(path);
+            putDMR.getDataMap().putAll(dataMap);
+            if (asset != null) {
+                putDMR.getDataMap().putAsset("data", asset);
+                System.out.println("Sending asset: " + asset.getUri());
+            }
+            //PutDataRequest request = putDMR.asPutDataRequest().setUrgent();
+            PutDataRequest request = putDMR.asPutDataRequest();
+
+            DataApi.DataItemResult result = Wearable.DataApi.putDataItem(googleClient, request).await();
+            if (result.getStatus().isSuccess()) {
+                Log.v("myTag", "DataMap: " + dataMap + " sent successfully to data layer ");
+                File fileDelete = new File(dataMap.getString("path"), dataMap.getString("fileName"));
+                fileDelete.delete();
+            }
+            else {
+                // Log an error
+                Log.v("myTag", "ERROR: failed to send DataMap to data layer");
+            }
+            Log.d(TAG,"End of the Service");
+            stopSelf();
+        }
+
+    }
 
 
 
