@@ -36,6 +36,11 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".SendConfirmationService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

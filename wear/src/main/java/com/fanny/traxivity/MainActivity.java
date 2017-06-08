@@ -237,14 +237,14 @@ public class MainActivity extends WearableActivity implements SensorEventListene
 
         //Sending data each minute
 
-        if((Calendar.getInstance().getTimeInMillis()-sendDate)>PreferenceManager.getDefaultSharedPreferences(this).getLong("sendTime",900000)) {
+        //if((Calendar.getInstance().getTimeInMillis()-sendDate)>PreferenceManager.getDefaultSharedPreferences(this).getLong("sendTime",900000)) {
 
         Log.d(TAG,"Calling SendFileService");
         startService(new Intent(MainActivity.this, SendFileService.class));
 
         sendDate=Calendar.getInstance().getTimeInMillis();
 
-        }
+        //}
 
 
     }

@@ -92,6 +92,10 @@ public class ListenerService extends WearableListenerService implements GoogleAp
                     Log.d(TAG,"Timestamp : "+ timestamp.toString());
                     Log.d(TAG,"Stepcount : "+Integer.toString(stepcount));
 
+
+                    startService(new Intent(this,SendConfirmationService.class));
+
+
                     sendBroadcast();
                 }
             } else if (event.getType() == DataEvent.TYPE_DELETED) {

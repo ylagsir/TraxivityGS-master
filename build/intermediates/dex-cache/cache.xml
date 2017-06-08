@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="4bcb197c6f00645b8f05b9c9356a4c63d5074310">
+        sha1="26a6447b82422d77ace5dae91ea5895a71781225">
         <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\wear\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_f61a34f3f75a440d22d1f9d9b6b98962497fb84b\classes.dex" />
     </item>
     <item
@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="bb3f4ce98fe6f30e3146a2d76a422f47c6206538">
+        sha1="1bab898632652c29f1399e34bb1fda3bd16026a3">
         <dex dex="C:\Users\ylags\Documents\TraxivityGS-master\mobile\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_a43b774872431154490c61534ab7ea5378d3b950\classes.dex" />
     </item>
 

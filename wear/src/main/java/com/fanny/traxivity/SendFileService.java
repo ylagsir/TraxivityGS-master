@@ -141,7 +141,6 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
     }
 
     public void sendFileContent(){
-        Log.d(TAG,"Beginning of SendFileContent");
         String line = "";
         String tmp;
         String fileName;
@@ -180,12 +179,23 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
                 dataMap.putInt("stepcount",PreferenceManager.getDefaultSharedPreferences(this).getInt("stepCount",0));
                 dataMap.putLong("timestamp",System.currentTimeMillis());
 
+                //Writing into the SharedPreferences the path and filenames that need to be deleted
+
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("path", settings.getString("path","")+path);
+                editor.putString("fileName", settings.getString("fileName","")+fileName);
+                editor.commit();
 
 
 
                 SendToDataLayerThread sendToDLT = new SendToDataLayerThread(WEARABLE_DATA_PATH, dataMap, googleClient, asset);
                 sendToDLT.start();
                 sendBroadcast(false);
+
+
+                startService(new Intent(this,DeleteFileService.class));
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -195,6 +205,7 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
                         buffreader.close();
                     } catch (java.io.IOException e) {
                         e.printStackTrace();
+
                     }
                 }
             }
@@ -276,6 +287,7 @@ public class SendFileService extends Service implements GoogleApiClient.Connecti
 
             DataApi.DataItemResult result = Wearable.DataApi.putDataItem(googleClient, request).await();
             if (result.getStatus().isSuccess()) {
+
                 Log.v("myTag", "DataMap: " + dataMap + " sent successfully to data layer ");
                 File fileDelete = new File(dataMap.getString("path"), dataMap.getString("fileName"));
                 fileDelete.delete();
